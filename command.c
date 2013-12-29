@@ -89,7 +89,7 @@ int module_load(const char *soname)
 
 	table_add(module_table, soname, t);
 
-	return 0;
+	return MODULE_OK;
 }
 
 void modules_handle(IRC *s, line *l)

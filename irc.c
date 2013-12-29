@@ -178,6 +178,9 @@ struct irc_line *parse(IRC *i, char *buf)
 			case MODULE_WTF:
 				irc_send(i, "PRIVMSG %s :Module malformed", il->at);
 			break;
+			case MODULE_OK:
+				irc_send(i, "PRIVMSG %s :Module loaded", il->at);
+			break;
 		}
 	}
 	else if(memcmp(il->said, "!unload ", 8) == 0)
@@ -208,8 +211,11 @@ int irc_do(struct irc *i)
 		if(!il)
 			break;
 		if(strcmp(il->what, "376") == 0)
+		{
 			i->state = READY;
-		irc_line_free(il);
+			irc_line_free(il);
+			return READY;
+		}
 		break;
 		case READY:
 		irc_get(i, buf);
